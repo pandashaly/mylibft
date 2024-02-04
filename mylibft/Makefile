@@ -15,7 +15,7 @@ CCFLAGS = cc -Wall -Wextra -Werror
 INC = inc/
 AR = ar -rcs
 RM = rm -f
-OBJ = $(SRC:.c = .o)
+OBJ = $(SRCS:.c=.o)
 
 IS = src/ft_is/ft_isalpha.c \
 	src/ft_is/ft_isdigit.c \
@@ -77,11 +77,11 @@ SRCS = $(IS) $(MEM) $(PUT) $(STR) $(LST) $(TO) $(PRINTF) $(GNL)
 
 all: $(NAME)
 
-%.o: %.c libft.h
-	$(CCFLAGS) -c $< -o $@
+%.o: %.c $(INC)libft.h $(INC)ft_printf.h $(INC)get_next_line_bonus.h
+	$(CCFLAGS) -I$(INC) -c $< -o $@
 
 $(NAME): $(OBJ)
-	$(AR) $(NAME) $(OBJ)
+	ar -rcs $(NAME) $(OBJ)
 
 clean: 
 	@echo "Cleaning up obj files"
