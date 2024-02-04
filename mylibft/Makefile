@@ -10,79 +10,85 @@
 #                                                                              #
 # **************************************************************************** #
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror
 NAME = libft.a
-INCLUDE = libft.h
-SRC = ft_isalpha.c \
-	  ft_isdigit.c \
-	  ft_isascii.c \
-	  ft_isprint.c \
-	  ft_isalnum.c \
-	  ft_memset.c \
-	  ft_bzero.c \
-	  ft_memcpy.c \
-	  ft_memmove.c \
-	  ft_strlen.c \
-	  ft_strlcat.c \
-	  ft_strlcpy.c \
-	  ft_toupper.c \
-	  ft_tolower.c \
-	  ft_strchr.c \
-	  ft_strrchr.c \
-	  ft_strncmp.c \
-	  ft_memchr.c \
-	  ft_strnstr.c \
-	  ft_atoi.c \
-	  ft_memcmp.c \
-	  ft_calloc.c \
-	  ft_strdup.c \
+CCFLAGS = cc -Wall -Wextra -Werror
+INC = inc/
+AR = ar -rcs
+RM = rm -f
+OBJ = $(SRC:.c = .o)
 
-OBJ = $(SRC:.c=.o)
-SRC_ADD = ft_substr.c \
-		  ft_strjoin.c \
-		  ft_strtrim.c \
-		  ft_split.c \
-		  ft_itoa.c \
-		  ft_strmapi.c \
-		  ft_striteri.c \
-		  ft_putchar_fd.c \
-		  ft_putstr_fd.c \
-		  ft_putendl_fd.c \
-		  ft_putnbr_fd.c \
+IS = src/ft_is/ft_isalpha.c \
+	src/ft_is/ft_isdigit.c \
+	src/ft_is/ft_isascii.c \
+	src/ft_is/ft_isprint.c \
+	src/ft_is/ft_isalnum.c \
 
-OBJ_ADD = $(SRC_ADD:.c=.o)
-SRC_BONUS = ft_lstnew.c \
-			ft_lstadd_front.c \
-			ft_lstsize.c \
-			ft_lstlast.c \
-			ft_lstadd_back.c \
-			ft_lstdelone.c \
-			ft_lstclear.c \
-			ft_lstiter.c \
-			ft_lstmap.c \
+MEM = src/ft_mem/ft_memset.c \
+	src/ft_mem/ft_bzero.c \
+	src/ft_mem/ft_memcpy.c \
+	src/ft_mem/ft_memmove.c \
+	src/ft_mem/ft_calloc.c \
+	src/ft_mem/ft_memchr.c \
+	src/ft_mem/ft_memcmp.c \
 
-OBJ_BONUS = $(SRC_BONUS:.c=.o)
+PUT = src/ft_put/ft_putchar_fd.c \
+	src/ft_put/ft_putendl_fd.c \
+	src/ft_put/ft_putstr_fd.c \
+	src/ft_put/ft_putnbr_fd.c \
+
+STR = src/ft_str/ft_split.c \
+	src/ft_str/ft_strchr.c \
+	src/ft_str/ft_strdup.c \
+	src/ft_str/ft_striteri.c \
+	src/ft_str/ft_strjoin.c \
+	src/ft_str/ft_strlcat.c \
+	src/ft_str/ft_strlcpy.c \
+	src/ft_str/ft_strlen.c \
+	src/ft_str/ft_strmapi.c \
+	src/ft_str/ft_strncmp.c \
+	src/ft_str/ft_strnstr.c \
+	src/ft_str/ft_strrchr.c \
+	src/ft_str/ft_strtrim.c \
+	src/ft_str/ft_substr.c \
+
+LST = src/ft_lst/ft_lstnew.c \
+	src/ft_lst/ft_lstadd_front.c \
+	src/ft_lst/ft_lstsize.c \
+	src/ft_lst/ft_lstlast.c \
+	src/ft_lst/ft_lstadd_back.c \
+	src/ft_lst/ft_lstdelone.c \
+	src/ft_lst/ft_lstclear.c \
+	src/ft_lst/ft_lstiter.c \
+	src/ft_lst/ft_lstmap.c \
+
+TO = src/ft_to/ft_toupper.c \
+	src/ft_to/ft_tolower.c \
+	src/ft_to/ft_atoi.c \
+	src/ft_to/ft_itoa.c \
+	src/ft_to/ft_atol.c \
+
+PRINTF = src/ft_printf/ft_printf.c \
+	src/ft_printf/utils.c \
+
+GNL = src/ft_gnl/gnl.c \
+	src/ft_gnl/gnl_utils.c \
+
+SRCS = $(IS) $(MEM) $(PUT) $(STR) $(LST) $(TO) $(PRINTF) $(GNL)
 
 all: $(NAME)
 
 %.o: %.c libft.h
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CCFLAGS) -c $< -o $@
 
-$(NAME): $(OBJ) $(OBJ_ADD)
-	ar -rcs $(NAME) $(OBJ) $(OBJ_ADD)
-	# -cc - Wall -Wextra -Werror -main.c
-	#  ar -rsc -libft.a -main.o
-
-bonus: $(OBJ_BONUS)
-	ar -rcs $(NAME) $(OBJ_BONUS)
+$(NAME): $(OBJ)
+	$(AR) $(NAME) $(OBJ)
 
 clean: 
 	@echo "Cleaning up obj files"
-	rm -f $(OBJ) $(OBJ_ADD) $(OBJ_BONUS)
+	$(RM) $(OBJ) $(OBJ_ADD) $(OBJ_BONUS)
 
 fclean: clean
-	rm -f $(NAME)
+	$(RM) $(NAME)
 
 re: fclean all
 

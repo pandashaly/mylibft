@@ -1,37 +1,68 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_puthex.c                                        :+:      :+:    :+:   */
+/*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssottori <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/04 19:44:39 by ssottori          #+#    #+#             */
-/*   Updated: 2023/12/07 21:42:40 by ssottori         ###   ########.fr       */
+/*   Created: 2023/12/04 15:58:09 by ssottori          #+#    #+#             */
+/*   Updated: 2023/12/04 21:34:31 by ssottori         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
-#include <unistd.h>
 
-/*int	ft_putnbr(long n)
+int	ft_putchar(char c)
 {
-	if (n >= 10)
-		ft_putnbr(n / 10);
-	ft_putchar(n % 10 + '0');
-}*/
+	write(1, &c, 1);
+	return (1);
+}
 
-/*void	ft_puthex(unsigned int n, char c)
+void	ft_putstr(char *s)
 {
-	char	*base;
+	int	i;
 
+	i = 0;
+	while (s[i])
+	{
+		write(1, &s[i], 1);
+		i++;
+	}
+}
+
+int	ft_printstr(char *s)
+{
+	int	i;
+
+	i = 0;
+	if (s == NULL)
+	{
+		ft_putstr("(null)");
+		return (6);
+	}
+	while (s[i] != '\0')
+	{
+		ft_putchar(s[i]);
+		i++;
+	}
+	return (i);
+}
+
+int	ft_putptr(void	*ptr)
+{
+	uintptr_t	cast;
+	char		*base;
+
+	cast = (uintptr_t)ptr;
 	base = "0123456789abcdef";
-	if (c == 'X')
-		base = "0123456789ABCDEF";
-	if (n > 15)
-		ft_puthex(n / 16, c);
-	ft_putchar(base[n % 16]);
-}*/
+	if (ptr == NULL)
+	{
+		write(1, "(nil)", 5);
+		return (5);
+	}
+	write(1, "0x", 2);
+	return (ft_unbase(cast, 16, base) + 2);
+}
 
 int	ft_putnbrbase(long n, int base, char *c)
 {
@@ -52,25 +83,15 @@ int	ft_putnbrbase(long n, int base, char *c)
 	}
 }
 
-/*int	main(void)
+int	ft_unbase(unsigned long n, unsigned int base, char *c)
 {
-	unsigned int	n;
-	char			c;
-	char			*x;
-	char			*X;
-	int				i;
+	int	count;
 
-	n = 17729936;
-	c = 'x';
-	x = "0123456789abcdef";
-	X = "0123456789ABCDEF";
-	i = ft_putnbrbase(n, 16, x);
-
-	printf(" nbrbse %d\n", i);
-	printf("\n");
-	//ft_puthex(n, c);
-	printf("\n");
-	printf("realx: %x\n", n);
-	printf("realX: %X\n", n);
-	return (0);
-}*/
+	if (n < base)
+		return (ft_putchar(c[n]));
+	else
+	{
+		count = ft_putnbrbase(n / base, base, c);
+		return (ft_putnbrbase(n % base, base, c) + count);
+	}
+}
